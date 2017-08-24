@@ -43,28 +43,30 @@ public abstract class AbstractDAO<E extends FNEntity, ID extends Serializable> i
 	}
 
 	@Override
-	public void save(E e) {
+	public E save(E e) {
 		entityManager.persist(e);
+		return e;
 	}
 
 	@Override
-	public void save(Iterable<E> es) {
+	public Iterable<E> save(Iterable<E> es) {
 		entityManager.persist(es);
+		return es;
 	}
 
 	@Override
-	public void update(E e) {
-		entityManager.merge(e);
+	public E update(E e) {
+		return entityManager.merge(e);
 	}
 
 	@Override
-	public void update(Iterable<E> es) {
-		entityManager.merge(es);		
+	public Iterable<E> update(Iterable<E> es) {
+		return entityManager.merge(es);		
 	}
 
 	@Override
-	public void remove(E e) {
-		entityManager.remove(e);		
+	public void remove(ID id) {
+		entityManager.remove(id);		
 	}
 	
 }
