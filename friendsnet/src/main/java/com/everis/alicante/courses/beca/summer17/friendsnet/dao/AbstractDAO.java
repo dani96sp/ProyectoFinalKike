@@ -2,7 +2,6 @@ package com.everis.alicante.courses.beca.summer17.friendsnet.dao;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -13,20 +12,23 @@ import javax.persistence.criteria.Root;
 import com.everis.alicante.courses.beca.summer17.friendsnet.entity.FNEntity;
 
 public abstract class AbstractDAO<E extends FNEntity, ID extends Serializable> implements EntityDAO<E, ID> {
+
 	private final Class<E> persistentClass;
-	
+
 	@SuppressWarnings("unchecked")
 	public AbstractDAO() {
-		this.persistentClass = (Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[1];
+		this.persistentClass = (Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass())
+				.getActualTypeArguments()[0];
+
 	}
-	
+
 	@PersistenceContext
-	private EntityManager entityManager;
-	
+	EntityManager entityManager;
+
 	public EntityManager getEntityManager() {
 		return this.entityManager;
 	}
-	
+
 	@Override
 	public Iterable<E> findAll() {
 		CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
@@ -49,7 +51,7 @@ public abstract class AbstractDAO<E extends FNEntity, ID extends Serializable> i
 	}
 
 	@Override
-	public Iterable<E> save(Iterable<E> es) {
+	public Iterable<E> save(Iterable<E> es) {		
 		entityManager.persist(es);
 		return es;
 	}
@@ -58,15 +60,15 @@ public abstract class AbstractDAO<E extends FNEntity, ID extends Serializable> i
 	public E update(E e) {
 		return entityManager.merge(e);
 	}
-
+	
 	@Override
 	public Iterable<E> update(Iterable<E> es) {
-		return entityManager.merge(es);		
+		return entityManager.merge(es);
 	}
 
 	@Override
 	public void remove(ID id) {
 		entityManager.remove(id);		
 	}
-	
+
 }

@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import com.everis.alicante.courses.beca.summer17.friendsnet.entity.Person;
 import com.everis.alicante.courses.beca.summer17.friendsnet.manager.PersonManager;
 
+
+
 @RestController
-@RequestMapping("/persons")
+@RequestMapping("/person")
 public class PersonController {
 
 	private PersonManager manager;
@@ -25,7 +27,9 @@ public class PersonController {
 
 	@PostMapping
 	public Person create(@RequestBody Person person) {
-		return null;
+		Person e = new Person("Pepito", "Grillo", new byte[]{1});
+		
+		return manager.save(e);
 	}
 
 	@PostMapping("/{id}/relate")
